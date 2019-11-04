@@ -37,13 +37,15 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 
 template = cv2.imread('res/bass_clef.jpg')
+#template = cv2.imread('res/treble_clef.jpg')
 template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
 
 
 #image = cv2.imread('samples/capture.jpg')
 #image = cv2.imread('samples/capture2.jpg')
-image = cv2.imread('samples/capture3.jpg')
+#image = cv2.imread('samples/capture3.jpg')
 #image = cv2.imread('samples/torcida.jpg')
+image = cv2.imread('samples/cotton_fields_0.jpg')
 
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -129,7 +131,9 @@ tH = int(template.shape[0] * scale)
 for maxLoc in zip(*loc[::-1]):
     cv2.rectangle(image, maxLoc, (maxLoc[0] + tW, maxLoc[1] + tH), (0, 0, 255), 2)
 
+cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
 cv2.imshow("Image", image)
+cv2.resizeWindow("Image", 1024, 768)
 cv2.waitKey(0)
 
 #template = cv2.resize(template, (256, 437))

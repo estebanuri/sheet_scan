@@ -1,11 +1,47 @@
 import cv2
 import numpy as np
 
+def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation=inter)
+
+    # return the resized image
+    return resized
+
+
 img = cv2.imread('samples/capture.jpg')
 #img = cv2.imread('samples/torcida.jpg')
 #img = cv2.imread('samples/capture2.jpg')
-img = cv2.imread('samples/capture3.jpg')
-gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+#img = cv2.imread('samples/capture3.jpg')
+img = cv2.imread('samples/cotton_fields_0.jpg')
+
+img = resize(img, width=1024)
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 #edges = cv2.Canny(gray,50,150,apertureSize = 3)
 _, edges = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
@@ -22,7 +58,7 @@ angles = []
 angles.append(np.pi / 2)
 
 # vertical
-angles.append(0)
+#angles.append(0)
 
 for line in lines:
 
@@ -59,7 +95,13 @@ for line in lines:
 
     cv2.line(img, (x1,y1), (x2,y2), (0,0,255), 1)
 
-cv2.imshow('results', img)
-cv2.waitKey()
+
+cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
+cv2.imshow("Image", img)
+cv2.resizeWindow("Image", 1024, 768)
+cv2.waitKey(0)
+
+#cv2.imshow('results', img)
+#cv2.waitKey()
 
 # cv2.imwrite('houghlines3.jpg',img)
