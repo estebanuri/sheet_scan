@@ -1,38 +1,7 @@
 import cv2
+import imutils
 import numpy as np
 #from matplotlib import pyplot as plt
-
-
-def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
-    # initialize the dimensions of the image to be resized and
-    # grab the image size
-    dim = None
-    (h, w) = image.shape[:2]
-
-    # if both the width and height are None, then return the
-    # original image
-    if width is None and height is None:
-        return image
-
-    # check to see if the width is None
-    if width is None:
-        # calculate the ratio of the height and construct the
-        # dimensions
-        r = height / float(h)
-        dim = (int(w * r), height)
-
-    # otherwise, the height is None
-    else:
-        # calculate the ratio of the width and construct the
-        # dimensions
-        r = width / float(w)
-        dim = (width, int(h * r))
-
-    # resize the image
-    resized = cv2.resize(image, dim, interpolation=inter)
-
-    # return the resized image
-    return resized
 
 
 
@@ -61,7 +30,7 @@ visualize = False
 scales = np.linspace(0.1, 1.0, 20)[::-1]
 for scale in scales:
 
-    scaled = resize(template, width=int(template.shape[1] * scale))
+    scaled = imutils.resize(template, width=int(template.shape[1] * scale))
     scaled_template = cv2.Canny(scaled, 50, 200)
     (tH, tW) = scaled_template.shape[:2]
 
